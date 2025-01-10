@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Pizzas</title>
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJw8H6XXI0r9DoOfpgh7g7S5sYchx0Cw1aANmP4NU9R9fK+APsPRVmJl0j5k" crossorigin="anonymous">
+    <script>
+        function updateToppingOptions() {
+            const topping1 = document.getElementById("topping1").value;
+            const topping2 = document.getElementById("topping2").value;
+            const topping3 = document.getElementById("topping3").value;
+
+            const allSelects = [document.getElementById("topping1"), document.getElementById("topping2"), document.getElementById("topping3")];
+            const selectedToppings = [topping1, topping2, topping3];
+
+            allSelects.forEach((select) => {
+                const options = select.options;
+                for (let i = 0; i < options.length; i++) {
+                    options[i].disabled = selectedToppings.includes(options[i].value) && options[i].value !== select.value;
+                }
+            });
+        }
+        function validatePizzaSelection(formId) {
+            const pizzaSelect = document.getElementById("pizzaSelect");
+            if (pizzaSelect.value === "") {
+                alert("Please select a pizza before updating or removing.");
+                return false;
+            }
+            return true; 
+        }
+    </script>
+</head>
+<body>
+    
+    <div class="container mt-5">
+        <h1 class="text-center">Manage Pizzas</h1>
+
+        <!-- Display action message -->
+        {% if action_message %}
+        <div class="alert alert-info text-center" role="alert">
+            {{ action_message }}
+        </div>
+        {% endif %}
+
+        <div class="row justify-content-center">
+            <!-- Add Pizza Form -->
+            <div class="col-md-8">
+                <h3>Create a New Pizza</h3>
+                <form method="POST" action="/chef" >
+                    <div class="mb-3">
+                        <label for="newPizzaName" class="form-label">Pizza Name:</label>
+                        <input type="text" class="form-control" name="newPizzaName" id="newPizzaName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="topping1" class="form-label">Select Initial Topping:</label>
+                        <select id="topping1" name="topping1" class="form-select" onchange="updateToppingOptions()" required>
+                            <option value="">-- Select a topping --</option>
+                            {% for topping in toppings %}
+                                <option value="{{ topping }}">{{ topping }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="topping2" class="form-label">Select Second Topping:</label>
+                        <select id="topping2" name="topping2" class="form-select" onchange="updateToppingOptions()">
+                            <option value="">-- Select a topping --</option>
+                            {% for topping in toppings %}
+                                <option value="{{ topping }}">{{ topping }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="topping3" class="form-label">Select Third Topping:</label>
+                        <select id="topping3" name="topping3" class="form-select" onchange="updateToppingOptions()">
+                            <option value="">-- Select a topping --</option>
+                            {% for topping in toppings %}
+                                <option value="{{ topping }}">{{ topping }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" name="addPizza" class="btn btn-primary">Add Pizza</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="row justify-content-center mt-5">
+            <!-- View All Pizzas -->
+            <div class="col-md-8">
+                <h3>View All Pizzas</h3>
+                <form method="POST" action="/chef" onsubmit="return validatePizzaSelection(this.id)">
+                    <div class="mb-3">
+                        <label for="pizzaSelect" class="form-label">Select a Pizza:</label>
+                        <select id="pizzaSelect" name="pizzaSelect" class="form-select" required>
+                            <option value="">-- Select a Pizza --</option>
+                            {% for pizza in pizzas %}
+                                <option value="{{ pizza[0] }}">{{ pizza[0] }} - {{ pizza[1] }}, {{ pizza[2] }}, {{ pizza[3] }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" name="removePizza" class="btn btn-success">Remove Pizza</button>
+                    <div id="updateInputDiv">
+                        <form method="POST" action="/chef">
+                            <div class="mb-3">
+                                <label for="pizzaUpdate" class="form-label"> New Pizza Name:</label>
+                                <input type="text" class="form-control" name="pizzaUpdate" id="pizzaUpdate">
+                            </div>
+                            <div class="mb-3">
+                                <label for="topping4" class="form-label">Select Initial Topping:</label>
+                                <select id="topping4" name="topping4" class="form-select" onchange="updateToppingOptions()">
+                                    <option value="">-- Select a topping --</option>
+                                    {% for topping in toppings %}
+                                        <option value="{{ topping }}">{{ topping }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="topping5" class="form-label">Select Second Topping:</label>
+                                <select id="topping5" name="topping5" class="form-select" onchange="updateToppingOptions()">
+                                    <option value="">-- Select a topping --</option>
+                                    {% for topping in toppings %}
+                                        <option value="{{ topping }}">{{ topping }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="topping6" class="form-label">Select Third Topping:</label>
+                                <select id="topping6" name="topping6" class="form-select" onchange="updateToppingOptions()">
+                                    <option value="">-- Select a topping --</option>
+                                    {% for topping in toppings %}
+                                        <option value="{{ topping }}">{{ topping }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <button type="submit" name="updatePizza" class="btn btn-primary">Update Pizza</button>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{{ url_for('home') }}" class="btn btn-success btn-block">Go to Home Page</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gyb6fb7eQXByy5rwHUGRjZYNel0z6r1XKM7I/5lJp8TVy9tfWq" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0T3fQkD0R2nP47A44coO9+aEz7jlXxHfXY5gD78y+13ZWeF7" crossorigin="anonymous"></script>
+</body>
+</html>
