@@ -7,15 +7,15 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
-# Install any needed dependencies
+# Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Make port 5000 available to the world outside the container
-EXPOSE 5000
-
-# Set the environment variables for Flask
+# Set environment variables
 ENV FLASK_APP=app.py
-ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_ENV=production
 
-# Run the Flask application
-CMD ["flask", "run"]
+# Expose port 8080 to the outside world (as specified by Fly's config)
+EXPOSE 8080
+
+# Run the application when the container launches
+CMD ["flask", "run", "--host=0.0.0.0", "--port=8080"]
