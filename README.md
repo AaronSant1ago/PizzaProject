@@ -25,7 +25,8 @@ To run the tests you must be in the PizzaProject folder then using pytest you ru
 This will automatically run 7 tests that test the application and if it's setup/running properly. 
 
 **Brief Overview**
-\For this project I used Flask as a framework because I had some experience with the project in the past and I think it was ideal for this project because of its requirements.\
+
+For this project I used Flask as a framework because I had some experience with the project in the past and I think it was ideal for this project because of its requirements.\
 \
 Flask also has a lot of support for tools like Bootstrap and SQlite, so I used both of those for some basic formatting on the site and for my database.\
 \
