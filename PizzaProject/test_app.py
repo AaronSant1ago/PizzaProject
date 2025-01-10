@@ -1,5 +1,3 @@
-import sys
-import os
 import pytest
 from pizzaProject import app, initialize_database
 
